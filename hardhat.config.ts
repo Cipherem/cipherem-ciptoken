@@ -16,6 +16,10 @@ const config: HardhatUserConfig = {
       },
     },
   },
+  defender: {
+    apiKey: process.env.DEFENDER_APIKEY!,
+    apiSecret: process.env.DEFENDER_APISECRET!,
+  },
   gasReporter: {
     currency: "USD",
     //gasPrice: 17,

@@ -4,6 +4,12 @@ The token is made of one upgradable smart contract called `CIPToken`, that imple
 
 <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v5.0.2/audits/README.md>
 
+## Token information
+
+Name: `CIPHEREM`
+Symbol: `CIP`
+Decimals: `18`
+
 ## CIPToken.sol
 
 Upgradable smart contract that implements: `ERC20Upgradeable`, `ERC20BurnableUpgradeable` and `ERC20PermitUpgradeable`.
