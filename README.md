@@ -6,9 +6,9 @@ The token is made of one upgradable smart contract called `CIPToken`, that imple
 
 ## Token information
 
-Name: `CIPHEREM`
-Symbol: `CIP`
-Decimals: `18`
+- Name: `CIPHEREM`
+- Symbol: `CIP`
+- Decimals: `18`
 
 ## CIPToken.sol
 
