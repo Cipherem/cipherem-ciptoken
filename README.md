@@ -12,7 +12,7 @@ The token is made of one upgradable smart contract called `CIPToken`, that imple
 
 ## CIPToken.sol
 
-Upgradable smart contract that implements: `ERC20Upgradeable`, `ERC20BurnableUpgradeable` and `ERC20PermitUpgradeable`.
+Upgradable smart contract that implements: `OwnableUpgradeable`, `ERC20Upgradeable`, `ERC20BurnableUpgradeable` and `ERC20PermitUpgradeable`.
 
 The smart contract is optimized with 999999 runs, to reduce gas fees with high transaction volume.
 
@@ -27,6 +27,7 @@ Passed all unit tests regarding implemented functions:
 - Burn
 - Burn from
 - Permit with signature
+- Batch minting by owner
 
 ## Environment variables
 ```
@@ -80,4 +81,26 @@ npx hardhat verify --network mainnet DEPLOYED_PROXY_ADDRESS
 Testnet verify with the following command (before running, check script parameters):
 ```
 npx hardhat verify --network sepolia DEPLOYED_PROXY_ADDRESS
+```
+
+### Using OpenZeppelin Defender
+
+Production deployment with the following command (before running, check script parameters):
+```
+npx hardhat run --network mainnet scripts/deployWithProxy-defender-CIPToken.ts
+```
+
+Testnet deployment with the following command (before running, check script parameters):
+```
+npx hardhat run --network sepolia scripts/deployWithProxy-defender-CIPToken.ts
+```
+
+Production upgrade with the following command (before running, check script parameters):
+```
+npx hardhat run --network mainnet scripts/upgrade-defender-CIPToken.ts
+```
+
+Testnet upgrade with the following command (before running, check script parameters):
+```
+npx hardhat run --network sepolia scripts/upgrade-defender-CIPToken.ts
 ```

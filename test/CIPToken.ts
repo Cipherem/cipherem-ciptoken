@@ -10,10 +10,12 @@ describe("CIPToken", function () {
 
   let spenderSigner: HardhatEthersSigner
 
+  let partnerSigner: HardhatEthersSigner
+
   let deployedCIPToken: CIPToken
 
   beforeEach(async function () {
-    const [signer1, signer2, signer3] = await ethers.getSigners()
+    const [signer1, signer2, signer3, signer4] = await ethers.getSigners()
 
     mainSigner = signer1
 
@@ -21,18 +23,33 @@ describe("CIPToken", function () {
 
     spenderSigner = signer3
 
+    partnerSigner = signer4
+
     const cipToken = await ethers.getContractFactory("CIPToken")
 
     deployedCIPToken = (await upgrades.deployProxy(cipToken, [
       mainSigner.address,
+      [
+        [mainSigner.address, ethers.parseUnits("200000000", 18)],
+        [partnerSigner.address, ethers.parseUnits("100000000", 18)],
+      ],
     ])) as any as CIPToken
   })
 
   it("Deployment", async function () {
     expect(await deployedCIPToken.name()).to.equal("CIPHEREM")
+
     expect(await deployedCIPToken.symbol()).to.equal("CIP")
+
     expect(await deployedCIPToken.totalSupply()).to.equal(
       ethers.parseUnits("300000000", 18)
+    )
+
+    expect(await deployedCIPToken.balanceOf(mainSigner.address)).to.equal(
+      ethers.parseUnits("200000000", 18)
+    )
+    expect(await deployedCIPToken.balanceOf(partnerSigner.address)).to.equal(
+      ethers.parseUnits("100000000", 18)
     )
   })
 
@@ -74,7 +91,7 @@ describe("CIPToken", function () {
     )
 
     expect(await deployedCIPToken.balanceOf(mainSigner.address)).to.equal(
-      ethers.parseUnits("250000000", 18)
+      ethers.parseUnits("150000000", 18)
     )
   })
 
@@ -92,7 +109,7 @@ describe("CIPToken", function () {
     )
 
     expect(await deployedCIPToken.balanceOf(mainSigner.address)).to.equal(
-      ethers.parseUnits("260000000", 18)
+      ethers.parseUnits("160000000", 18)
     )
   })
 
@@ -145,5 +162,21 @@ describe("CIPToken", function () {
         userSigner.address,
         ethers.parseUnits("60000000", 18)
       )
+  })
+
+  it("Owner batch minting", async function () {
+    await deployedCIPToken
+      .connect(mainSigner)
+      .batchMint([[partnerSigner.address, ethers.parseUnits("50000000", 18)]])
+
+    await expect(
+      deployedCIPToken
+        .connect(userSigner)
+        .batchMint([[partnerSigner.address, ethers.parseUnits("50000000", 18)]])
+    ).to.be.reverted
+
+    expect(await deployedCIPToken.totalSupply()).to.equal(
+      ethers.parseUnits("350000000", 18)
+    )
   })
 })
